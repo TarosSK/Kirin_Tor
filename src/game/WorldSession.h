@@ -133,10 +133,14 @@ class MANGOS_DLL_SPEC WorldSession
         void SendSetPhaseShift(uint32 phaseShift);
 
         AccountTypes GetSecurity() const { return _security; }
+		uint32 GetVIP() const {return _VIP;}
+
         uint32 GetAccountId() const { return _accountId; }
         Player* GetPlayer() const { return _player; }
         char const* GetPlayerName() const;
         void SetSecurity(AccountTypes security) { _security = security; }
+		void SetVIP(uint32 vip) { _VIP = vip; }
+
         std::string const& GetRemoteAddress() { return m_Address; }
         void SetPlayer(Player *plr);
         uint8 Expansion() const { return m_expansion; }
@@ -740,6 +744,7 @@ class MANGOS_DLL_SPEC WorldSession
         std::string m_Address;
 
         AccountTypes _security;
+		uint32 _VIP;
         uint32 _accountId;
         uint8 m_expansion;
 

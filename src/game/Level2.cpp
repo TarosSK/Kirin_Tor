@@ -2120,6 +2120,7 @@ bool ChatHandler::HandlePInfoCommand(const char* args)
     uint32 total_player_time = 0;
     uint32 level = 0;
     uint32 latency = 0;
+	uint32 vip = 0;
 
     // get additional information from Player object
     if(target)
@@ -2133,6 +2134,7 @@ bool ChatHandler::HandlePInfoCommand(const char* args)
         total_player_time = target->GetTotalPlayedTime();
         level = target->getLevel();
         latency = target->GetSession()->GetLatency();
+		vip = target->GetSession()->GetVIP();
     }
     // get additional information from DB
     else
@@ -2152,6 +2154,9 @@ bool ChatHandler::HandlePInfoCommand(const char* args)
         money = fields[2].GetUInt32();
         accId = fields[3].GetUInt32();
         delete result;
+
+		result = loginDatabase.PQuery("SELECT level FROM account_vip where start<now() and end>now() and realmid = '%u' and acctid='%u'", realmID,GUID_LOPART(target_guid));
+		if(result) vip = (*result)[0].GetUInt32();
     }
 
     std::string username = GetMangosString(LANG_ERROR);
@@ -2189,6 +2194,7 @@ bool ChatHandler::HandlePInfoCommand(const char* args)
     uint32 silv = (money % GOLD) / SILVER;
     uint32 copp = (money % GOLD) % SILVER;
     PSendSysMessage(LANG_PINFO_LEVEL,  timeStr.c_str(), level, gold,silv,copp );
+	PSendSysMessage("VIP level:%d",vip);
 
     return true;
 }
