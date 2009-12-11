@@ -24,7 +24,7 @@ CREATE TABLE `db_version` (
   `version` varchar(120) default NULL,
   `creature_ai_version` varchar(120) default NULL,
   `cache_id` int(10) default '0',
-  `required_8938_01_mangos_spell_proc_event` bit(1) default NULL
+  `required_8965_02_mangos_command` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 
 --
@@ -705,6 +705,7 @@ INSERT INTO `command` VALUES
 ('quest add',3,'Syntax: .quest add #quest_id\r\n\r\nAdd to character quest log quest #quest_id. Quest started from item can\'t be added by this command but correct .additem call provided in command output.'),
 ('quest complete',3,'Syntax: .quest complete #questid\r\nMark all quest objectives as completed for target character active quest. After this target character can go and get quest reward.'),
 ('quest remove',3,'Syntax: .quest remove #quest_id\r\n\r\nSet quest #quest_id state to not completed and not active (and remove from active quest list) for selected player.'),
+('quit',4,'Syntax: quit\r\n\r\nClose RA connection. Command must be typed fully (quit).'),
 ('recall',1,'Syntax: .recall [$playername]\r\n\r\nTeleport $playername or selected player to the place where he has been before last use of a teleportation command. If no $playername is entered and no player is selected, it will teleport you.'),
 ('reload all',3,'Syntax: .reload all\r\n\r\nReload all tables with reload support added and that can be _safe_ reloaded.'),
 ('reload all_area',3,'Syntax: .reload all_area\r\n\r\nReload all `areatrigger_*` tables if reload support added for this table and this table can be _safe_ reloaded.'),
@@ -3555,6 +3556,7 @@ INSERT INTO `mangos_string` VALUES
 (1012,'===========================================================================',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1013,'|%15s| %20s | %15s |%4d| %9d |',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1014,'No online players.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(1015,'Used not fully typed quit command, need type it fully (quit), or command used not in RA command line.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1100,'Account %s (Id: %u) have up to %u expansion allowed now.',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1101,'Message of the day changed to:\r\n%s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
 (1102,'Message sent to %s: %s',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
@@ -15344,6 +15346,18 @@ INSERT INTO spell_chain VALUES
 (26801,12180,3908,5,0),
 (51309,26790,3908,6,0),
 /*------------------
+-- (202) Engineering
+------------------*/
+/*Engineering*/
+(4036,0,4036,1,0),
+(4037,4036,4036,2,0),
+(4038,4037,4036,3,0),
+(12656,4038,4036,4,0),
+(20219,12656,4036,5,0),
+(20222,12656,4036,5,0),
+(30350,12656,4036,5,0),
+(51306,30350,4036,6,0),
+/*------------------
 --(203)Pet-Spider
 --(208)Pet-Wolf
 --(212)Pet-Crocolisk
@@ -15364,18 +15378,6 @@ INSERT INTO spell_chain VALUES
 (27050,17261,17253,9,0),
 (52473,27050,17253,10,0),
 (52474,52473,17253,11,0),
-/*------------------
--- (202) Engineering
-------------------*/
-/*Engineering*/
-(4036,0,4036,1,0),
-(4037,4036,4036,2,0),
-(4038,4037,4036,3,0),
-(12656,4038,4036,4,0),
-(20219,12656,4036,5,0),
-(20222,12656,4036,5,0),
-(30350,12656,4036,5,0),
-(51306,30350,4036,6,0),
 /*------------------
 -- (204) Pet - Voidwalker
 ------------------*/
@@ -15436,6 +15438,16 @@ INSERT INTO spell_chain VALUES
 (11784,7813,6360,3,0),
 (11785,11784,6360,4,0),
 (27275,11785,6360,5,0),
+/*------------------
+-- (208) Pet - Wolf
+------------------*/
+/* Furious Howl */
+(24604,0,24604,1,0),
+(64491,24604,24604,2,0),
+(64492,64491,24604,3,0),
+(64493,64492,24604,4,0),
+(64494,64493,24604,5,0),
+(64495,64494,24604,6,0),
 /*------------------
 -- (209) Pet - Cat
 ------------------*/
@@ -18358,6 +18370,7 @@ INSERT INTO `spell_proc_event` VALUES
 (54936, 0x00000000, 10, 0x40000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0.000000, 0.000000,  0),
 (54937, 0x00000000, 10, 0x80000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0.000000, 0.000000,  0),
 (54939, 0x00000000, 10, 0x00008000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0.000000, 0.000000,  0),
+(55166, 0x00000000,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000002, 0.000000, 0.000000,  0),
 (55380, 0x00000000,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0.000000, 0.000000, 45),
 (55440, 0x00000000, 11, 0x00000040, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0.000000, 0.000000,  0),
 (55640, 0x00000000,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0.000000, 0.000000, 45),
@@ -18394,6 +18407,7 @@ INSERT INTO `spell_proc_event` VALUES
 (57352, 0x00000000,  0, 0x00000000, 0x00000000, 0x00000000, 0x00010154, 0x00000003, 0.000000, 0.000000, 45),
 (57470, 0x00000000,  6, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0.000000, 0.000000,  0),
 (57472, 0x00000000,  6, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0.000000, 0.000000,  0),
+(57499, 0x00000000,  4, 0x40000001, 0x00010000, 0x00000000, 0x00014000, 0x00000000, 0.000000, 0.000000,  0),
 (57878, 0x00000000,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000010, 0.000000, 0.000000,  0),
 (57880, 0x00000000,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000010, 0.000000, 0.000000,  0),
 (57881, 0x00000000,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000010, 0.000000, 0.000000,  0),
