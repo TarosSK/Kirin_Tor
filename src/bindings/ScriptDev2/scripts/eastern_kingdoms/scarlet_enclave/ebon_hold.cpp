@@ -1108,9 +1108,9 @@ bool GOHello_go_acherus_soul_prison(Player* pPlayer, GameObject* pGo)
 
 bool GossipHello_acherus_taxi(Player *player, Creature *_Creature)
 {
-    if(m_creature->GetEntry() == 29488){
+    if(_Creature->GetEntry() == 29488){
         player->ADD_GOSSIP_ITEM(0, GOSSIP_FLIGHT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
-    }else if(m_creature->GetEntry() == 29501){
+    }else if(_Creature->GetEntry() == 29501){
         player->ADD_GOSSIP_ITEM(0, GOSSIP_FLIGHT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+2);
     }
 
