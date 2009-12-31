@@ -1100,6 +1100,39 @@ bool GOHello_go_acherus_soul_prison(Player* pPlayer, GameObject* pGo)
     return false;
 }
 
+/*######
+## acherus_taxi
+######*/
+
+#define GOSSIP_FLIGHT "I need a ride"
+
+bool GossipHello_acherus_taxi(Player *player, Creature *_Creature)
+{
+    if(m_creature->GetEntry() == 29488){
+        player->ADD_GOSSIP_ITEM(0, GOSSIP_FLIGHT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
+    }else if(m_creature->GetEntry() == 29501){
+        player->ADD_GOSSIP_ITEM(0, GOSSIP_FLIGHT, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+2);
+    }
+
+    player->SEND_GOSSIP_MENU(9978,_Creature->GetGUID());
+    return true;
+}
+
+bool GossipSelect_acherus_taxi(Player *player, Creature *_Creature, uint32 sender, uint32 action )
+{
+    switch(action)
+    {
+    case GOSSIP_ACTION_INFO_DEF+1:
+           player->GetSession()->SendDoFlight(26308, 1053);
+        break;
+    case GOSSIP_ACTION_INFO_DEF+2:
+           player->GetSession()->SendDoFlight(26308, 1054);
+        break;
+    }
+    return true;
+}
+ 
+
 void AddSC_ebon_hold()
 {
     Script *newscript;
@@ -1135,5 +1168,11 @@ void AddSC_ebon_hold()
     newscript = new Script;
     newscript->Name = "go_acherus_soul_prison";
     newscript->pGOHello = &GOHello_go_acherus_soul_prison;
+    newscript->RegisterSelf();
+
+	newscript = new Script;
+    newscript->Name="acherus_taxi";
+    newscript->pGossipHello = &GossipHello_acherus_taxi;
+    newscript->pGossipSelect = &GossipSelect_acherus_taxi;
     newscript->RegisterSelf();
 }
