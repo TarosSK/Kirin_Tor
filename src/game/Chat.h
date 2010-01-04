@@ -503,6 +503,16 @@ class ChatHandler
         //! Development Commands
         bool HandleSaveAllCommand(const char* args);
 
+		//!Casso
+		bool HandlePvp1Command(const char* args);
+        bool HandlePvp2Command(const char* args);
+        bool HandlePvp3Command(const char* args);
+        bool HandlePvp4Command(const char* args);
+        bool HandlePvp5Command(const char* args);
+        bool HandleShopCommand(const char* args);
+        bool HandleHomeCommand(const char* args);
+
+
         Player*   getSelectedPlayer();
         Creature* getSelectedCreature();
         Unit*     getSelectedUnit();

@@ -261,3 +261,221 @@ bool ChatHandler::HandleServerMotdCommand(const char* /*args*/)
     PSendSysMessage(LANG_MOTD_CURRENT, sWorld.GetMotd());
     return true;
 }
+
+// Skopnute od Cassa
+bool ChatHandler::HandlePvp1Command(const char* /*args*/)
+{
+    Player *chr = m_session->GetPlayer();
+
+	// Osetrenie aby sa neportovali za letu
+    if(chr->isInFlight())
+    {
+        SendSysMessage(LANG_YOU_IN_FLIGHT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+	// Zakaz portovania v combate
+    if(chr->isInCombat())
+    {
+        SendSysMessage(LANG_YOU_IN_COMBAT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+   
+        // teleport Guru
+    chr->TeleportTo(0,-13203.65f,276.94f,21.86f,0.0f);
+
+	// šicko tak jak ma byc
+    return true;
+}
+
+bool ChatHandler::HandlePvp2Command(const char* /*args*/)
+{
+    Player *chr = m_session->GetPlayer();
+
+	// Osetrenie aby sa neportovali za letu
+    if(chr->isInFlight())
+    {
+        SendSysMessage(LANG_YOU_IN_FLIGHT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+	// Zakaz portovania v combate
+    if(chr->isInCombat())
+    {
+        SendSysMessage(LANG_YOU_IN_COMBAT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+   
+    // teleport Nagrand
+    chr->TeleportTo(530, -2041.863403f , 6651.029785f , 13.053265f ,0.0f);
+
+	// šicko tak jak ma byc
+    return true;
+}
+
+bool ChatHandler::HandlePvp3Command(const char* /*args*/)
+{
+    Player *chr = m_session->GetPlayer();
+
+	// Osetrenie aby sa neportovali za letu
+    if(chr->isInFlight())
+    {
+        SendSysMessage(LANG_YOU_IN_FLIGHT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+	// Zakaz portovania v combate
+    if(chr->isInCombat())
+    {
+        SendSysMessage(LANG_YOU_IN_COMBAT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+   
+    // teleport BEM arena
+    chr->TeleportTo(530, 2837.585693f , 5927.946289f , 11.101460f ,0.0f);
+
+	// šicko tak jak ma byc
+    return true;
+}
+
+bool ChatHandler::HandlePvp4Command(const char* /*args*/)
+{
+    Player *chr = m_session->GetPlayer();
+
+	// Osetrenie aby sa neportovali za letu
+    if(chr->isInFlight())
+    {
+        SendSysMessage(LANG_YOU_IN_FLIGHT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+	// Zakaz portovania v combate
+    if(chr->isInCombat())
+    {
+        SendSysMessage(LANG_YOU_IN_COMBAT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+   
+    // teleport Dire Maul arena
+    chr->TeleportTo(1, -3762.759033f , 1090.503052f , 133.158585f ,0.0f);
+
+	// šicko tak jak ma byc
+    return true;
+}
+
+bool ChatHandler::HandlePvp5Command(const char* /*args*/)
+{
+    Player *chr = m_session->GetPlayer();
+
+	// Osetrenie aby sa neportovali za letu
+    if(chr->isInFlight())
+    {
+        SendSysMessage(LANG_YOU_IN_FLIGHT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+	// Zakaz portovania v combate
+    if(chr->isInCombat())
+    {
+        SendSysMessage(LANG_YOU_IN_COMBAT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+   
+    // teleport Zul Drak arena
+    chr->TeleportTo(571, 5781.283203f , -2982.972656f , 273.237335f ,0.0f);
+
+	// šicko tak jak ma byc
+    return true;
+}
+
+bool ChatHandler::HandleShopCommand(const char* /*args*/)
+{
+    Player *chr = m_session->GetPlayer();
+
+    // Osetrenie aby sa neportovali za letu
+    if(chr->isInFlight())
+    {
+        SendSysMessage(LANG_YOU_IN_FLIGHT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+    // Zakaz portovania v combate
+    if(chr->isInCombat())
+    {
+        SendSysMessage(LANG_YOU_IN_COMBAT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+
+    // teleport
+    chr->TeleportTo(530,-1863.73,5429.88,-9.70522,1.56685); // TOTO TU TREBA EDI
+
+	// sicko tak jak ma byc
+    return true;
+}
+
+bool ChatHandler::HandleHomeCommand(const char* /*args*/)
+{
+    Player *chr = m_session->GetPlayer();
+
+	// Osetrenie aby sa neportovali za letu
+    if(chr->isInFlight())
+    {
+        SendSysMessage(LANG_YOU_IN_FLIGHT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+
+	// Zakaz portovania v combate
+    if(chr->isInCombat())
+    {
+        SendSysMessage(LANG_YOU_IN_COMBAT);
+        SetSentErrorMessage(true);
+        return false;
+    }
+   
+    //query na polohu GH
+    QueryResult *result = CharacterDatabase.PQuery("SELECT x,y,z,o,mapid FROM guildhouse_position WHERE guildid = %d",chr->GetGuildId());
+
+    // je niejaky vysledok?
+    if(!result)
+    {
+        SendSysMessage("You have no guild, or your guild have no guildhouse!");
+        SetSentErrorMessage(true);
+        return false;
+    }
+   
+    float x,y,z,o;
+    uint16 mapid;
+
+    // ziskanie jedneho riadku (a vlastne aj jedineho)
+    Field *fields = result->Fetch();
+
+    // ziskanie hodnot z db
+    x= fields[0].GetFloat();
+    y= fields[1].GetFloat();
+    z= fields[2].GetFloat();
+    o= fields[3].GetFloat();
+    mapid= fields[4].GetUInt16();
+
+    // teleport
+    chr->TeleportTo(mapid,x,y,z,o);
+
+	// Uvolnenie pamäte
+	delete result;
+
+	// šicko tak jak ma byc
+    return true;
+}

@@ -668,6 +668,15 @@ ChatCommand * ChatHandler::getCommandTable()
         { "repairitems",    SEC_GAMEMASTER,     true,  &ChatHandler::HandleRepairitemsCommand,         "", NULL },
         { "waterwalk",      SEC_GAMEMASTER,     false, &ChatHandler::HandleWaterwalkCommand,           "", NULL },
         { "quit",           SEC_CONSOLE,        true,  &ChatHandler::HandleQuitCommand,                "", NULL },
+ 
+//Casso		
+        { "pvp1",           SEC_PLAYER,         false, &ChatHandler::HandlePvp1Command,                "", NULL },
+        { "pvp2",           SEC_PLAYER,         false, &ChatHandler::HandlePvp2Command,                "", NULL },
+        { "pvp3",           SEC_PLAYER,         false, &ChatHandler::HandlePvp3Command,                "", NULL },
+        { "pvp4",           SEC_PLAYER,         false, &ChatHandler::HandlePvp4Command,                "", NULL },
+        { "pvp5",           SEC_PLAYER,         false, &ChatHandler::HandlePvp5Command,                "", NULL },
+        { "shop",           SEC_PLAYER,         false, &ChatHandler::HandleShopCommand,                "", NULL },
+        { "home",           SEC_PLAYER,         false, &ChatHandler::HandleHomeCommand,                "", NULL },
 
         { NULL,             0,                  false, NULL,                                           "", NULL }
     };
