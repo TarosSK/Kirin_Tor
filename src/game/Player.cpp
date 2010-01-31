@@ -5728,6 +5728,15 @@ void Player::removeActionButton(uint8 button)
     sLog.outDetail( "Action Button '%u' Removed from Player '%u'", button, GetGUIDLow() );
 }
 
+ActionButton const* Player::GetActionButton(uint8 button)
+{
+    ActionButtonList::iterator buttonItr = m_actionButtons.find(button);
+    if (buttonItr==m_actionButtons.end() || buttonItr->second.uState == ACTIONBUTTON_DELETED)
+        return NULL;
+
+    return &buttonItr->second;
+}
+
 bool Player::SetPosition(float x, float y, float z, float orientation, bool teleport)
 {
     // prevent crash when a bad coord is sent by the client
@@ -12468,20 +12477,20 @@ void Player::OnGossipSelect(WorldObject* pSource, uint32 gossipListId, uint32 me
     {
         case GOSSIP_OPTION_GOSSIP:
         {
+            if (pMenuData.m_gAction_poi)
+                PlayerTalkClass->SendPointOfInterest(pMenuData.m_gAction_poi);
+
             if (pMenuData.m_gAction_menu)
             {
                 PrepareGossipMenu(pSource, pMenuData.m_gAction_menu);
                 SendPreparedGossip(pSource);
             }
 
-            if (pMenuData.m_gAction_poi)
-                PlayerTalkClass->SendPointOfInterest(pMenuData.m_gAction_poi);
-
             if (pMenuData.m_gAction_script)
             {
-                if (pSource->GetTypeId() == TYPEID_UNIT)
+                if (pSource->GetTypeId() == TYPEID_GAMEOBJECT)
                     GetMap()->ScriptsStart(sGossipScripts, pMenuData.m_gAction_script, this, pSource);
-                else if (pSource->GetTypeId() == TYPEID_GAMEOBJECT)
+                else if (pSource->GetTypeId() == TYPEID_UNIT)
                     GetMap()->ScriptsStart(sGossipScripts, pMenuData.m_gAction_script, pSource, this);
             }
 
