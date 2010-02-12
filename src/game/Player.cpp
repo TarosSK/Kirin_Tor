@@ -20427,7 +20427,7 @@ void Player::AutoStoreLoot(uint8 bag, uint8 slot, uint32 loot_id, LootStore cons
 
 uint32 Player::CalculateTalentsPoints() const
 {
-	if sWorld.getConfig(CONFIG_FUNSERVER) return uint32(71 * sWorld.getRate(RATE_TALENT));
+	if(sWorld.getConfig(CONFIG_FUNSERVER)) return uint32(71 * sWorld.getRate(RATE_TALENT));
 
     uint32 base_talent = getLevel() < 10 ? 0 : getLevel()-9;
 
