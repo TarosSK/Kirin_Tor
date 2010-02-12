@@ -713,6 +713,8 @@ void World::LoadConfigSettings(bool reload)
         m_configs[CONFIG_START_PLAYER_LEVEL] = m_configs[CONFIG_MAX_PLAYER_LEVEL];
     }
 
+	m_configs[CONFIG_FUNSERVER] = sConfig.GetIntDefault("FUNServer", 0);
+
     m_configs[CONFIG_START_HEROIC_PLAYER_LEVEL] = sConfig.GetIntDefault("StartHeroicPlayerLevel", 55);
     if(m_configs[CONFIG_START_HEROIC_PLAYER_LEVEL] < 1)
     {
