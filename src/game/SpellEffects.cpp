@@ -1201,6 +1201,32 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
                             m_caster->CastSpell(m_caster, 49378, true);
                     }
                     return;
+                case 45980:                                 // Re-Cursive Transmatter Injection
+                {
+                    if (m_caster->GetTypeId() == TYPEID_PLAYER && unitTarget)
+                    {
+                        if (const SpellEntry *pSpell = sSpellStore.LookupEntry(46022))
+                        {
+                            m_caster->CastSpell(unitTarget, pSpell, true);
+                            ((Player*)m_caster)->KilledMonsterCredit(pSpell->EffectMiscValue[EFFECT_INDEX_0], 0);
+                        }
+
+                        if (unitTarget->GetTypeId() == TYPEID_UNIT)
+                            ((Creature*)unitTarget)->ForcedDespawn();
+                    }
+
+                    return;
+                }
+                case 45990:                                 // Collect Oil
+                {
+                    if (!unitTarget || unitTarget->GetTypeId() != TYPEID_UNIT)
+                        return;
+
+                    m_caster->CastSpell(m_caster, 45991, true);
+                    unitTarget->setDeathState(JUST_DIED);
+                    unitTarget->SetHealth(0);
+                    return;
+                }
                 case 50243:                                 // Teach Language
                 {
                     if (m_caster->GetTypeId() != TYPEID_PLAYER)
@@ -1251,6 +1277,16 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
                         if (const SpellCastTimesEntry *pCastTime = sSpellCastTimesStore.LookupEntry(pSpell->CastingTimeIndex))
                             creatureTarget->ForcedDespawn(pCastTime->CastTime + 1);
                     }
+                    return;
+                }
+                case 46606:                                 // Plague Canister Dummy
+                {
+                    if (!unitTarget || unitTarget->GetTypeId() != TYPEID_UNIT)
+                        return;
+
+                    unitTarget->CastSpell(m_caster, 43160, true);
+                    unitTarget->setDeathState(JUST_DIED);
+                    unitTarget->SetHealth(0);
                     return;
                 }
                 case 46797:                                 // Quest - Borean Tundra - Set Explosives Cart
