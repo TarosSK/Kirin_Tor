@@ -4495,6 +4495,9 @@ void Aura::HandleModMechanicImmunity(bool apply, bool /*Real*/)
             }
         }
     }
+    // Heroic Fury (Intercept cooldown remove)
+    else if (apply && GetSpellProto()->Id == 60970 && m_target->GetTypeId() == TYPEID_PLAYER)
+        ((Player*)m_target)->RemoveSpellCooldown(20252, true);
 }
 
 void Aura::HandleModMechanicImmunityMask(bool apply, bool /*Real*/)
@@ -5316,6 +5319,7 @@ void Aura::HandleAuraModIncreaseHealth(bool apply, bool Real)
         case 50322:                                         // Survival Instincts
         case 54443:                                         // Demonic Empowerment (Voidwalker)
         case 55233:                                         // Vampiric Blood
+        case 59465:                                         // Brood Rage (Ahn'Kahet)
         {
             if(Real)
             {
@@ -6430,7 +6434,7 @@ void Aura::HandleSpellSpecificBoosts(bool apply)
                         }
 
                         if (power_pct || !apply)
-                            spellId2 = 49772;                   // Unholy Presence, speed part
+                            spellId2 = 49772;                   // Unholy Presence, speed part, spell1 used for Improvement presence fit to own presence
                     }
                     else
                         spellId1 = 49772;                       // Unholy Presence move speed
@@ -6464,7 +6468,7 @@ void Aura::HandleSpellSpecificBoosts(bool apply)
 
                     if (GetId()==48265)                     // Unholy Presence
                     {
-                        // Improved Unholy Presence
+                        // Improved Unholy Presence, special case for own presence
                         int32 power_pct = 0;
                         if (apply)
                         {
@@ -6493,9 +6497,6 @@ void Aura::HandleSpellSpecificBoosts(bool apply)
                             m_target->RemoveAurasDueToSpell(65095);
                         }
                     }
-                    else
-                        spellId1 = 63611;                   // Improved Blood Presence, trigger for heal
-
                     break;
                 }
             }
